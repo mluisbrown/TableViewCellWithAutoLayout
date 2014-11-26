@@ -41,26 +41,31 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.titleLabel = [UILabel newAutoLayoutView];
-        [self.titleLabel setLineBreakMode:NSLineBreakByTruncatingTail];
-        [self.titleLabel setNumberOfLines:1];
-        [self.titleLabel setTextAlignment:NSTextAlignmentLeft];
-        [self.titleLabel setTextColor:[UIColor blackColor]];
-        self.titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:1 alpha:0.1];
+        self.mainImage = [UIImageView newAutoLayoutView];
+        self.mainImage.backgroundColor = [UIColor lightGrayColor];
+        self.mainImage.image = [UIImage imageNamed:@"CardBackground"];
         
-        self.bodyLabel = [UILabel newAutoLayoutView];
-        [self.bodyLabel setLineBreakMode:NSLineBreakByTruncatingTail];
-        [self.bodyLabel setNumberOfLines:0];
-        [self.bodyLabel setTextAlignment:NSTextAlignmentLeft];
-        [self.bodyLabel setTextColor:[UIColor darkGrayColor]];
-        self.bodyLabel.backgroundColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.1];
+//        self.titleLabel = [UILabel newAutoLayoutView];
+//        [self.titleLabel setLineBreakMode:NSLineBreakByTruncatingTail];
+//        [self.titleLabel setNumberOfLines:1];
+//        [self.titleLabel setTextAlignment:NSTextAlignmentLeft];
+//        [self.titleLabel setTextColor:[UIColor blackColor]];
+//        self.titleLabel.backgroundColor = [UIColor colorWithRed:0 green:0 blue:1 alpha:0.1];
+//        
+//        self.bodyLabel = [UILabel newAutoLayoutView];
+//        [self.bodyLabel setLineBreakMode:NSLineBreakByTruncatingTail];
+//        [self.bodyLabel setNumberOfLines:0];
+//        [self.bodyLabel setTextAlignment:NSTextAlignmentLeft];
+//        [self.bodyLabel setTextColor:[UIColor darkGrayColor]];
+//        self.bodyLabel.backgroundColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.1];
         
         self.contentView.backgroundColor = [UIColor colorWithRed:0 green:1 blue:0 alpha:0.1];
         
-        [self.contentView addSubview:self.titleLabel];
-        [self.contentView addSubview:self.bodyLabel];
+        [self.contentView addSubview:self.mainImage];
+//        [self.contentView addSubview:self.titleLabel];
+//        [self.contentView addSubview:self.bodyLabel];
         
-        [self updateFonts];
+//        [self updateFonts];
     }
     
     return self;
@@ -73,27 +78,34 @@
         // As a fix, you can temporarily increase the size of the cell's contentView so that this does not occur using code similar to the line below.
         //      See here for further discussion: https://github.com/Alex311/TableCellWithAutoLayout/commit/bde387b27e33605eeac3465475d2f2ff9775f163#commitcomment-4633188
         // self.contentView.bounds = CGRectMake(0.0f, 0.0f, 99999.0f, 99999.0f);
+
+        // the image view is pinned to the edges of the content view with a 15px inset
+        // this should be enough to force the height of the content view
+        [self.mainImage autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(15, 15, 15, 15)];
+        // make the height of the image view equal to 0.5 the width of the contentView
+        [self.mainImage autoMatchDimension:ALDimensionHeight toDimension:ALDimensionWidth ofView:self.contentView withMultiplier:0.5 relation:NSLayoutRelationGreaterThanOrEqual];
         
-        [UIView autoSetPriority:UILayoutPriorityRequired forConstraints:^{
-            [self.titleLabel autoSetContentCompressionResistancePriorityForAxis:ALAxisVertical];
-        }];
-        [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
-        [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:kLabelHorizontalInsets];
-        [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:kLabelHorizontalInsets];
         
-        // This is the constraint that connects the title and body labels. It is a "greater than or equal" inequality so that if the row height is
-        // slightly larger than what is actually required to fit the cell's subviews, the extra space will go here. (This is the case on iOS 7
-        // where the cell separator is only 0.5 points tall, but in the tableView:heightForRowAtIndexPath: method of the view controller, we add
-        // a full 1.0 point in extra height to account for it, which results in 0.5 points extra space in the cell.)
-        // See https://github.com/smileyborg/TableViewCellWithAutoLayout/issues/3 for more info.
-        [self.bodyLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
-        
-        [UIView autoSetPriority:UILayoutPriorityRequired forConstraints:^{
-            [self.bodyLabel autoSetContentCompressionResistancePriorityForAxis:ALAxisVertical];
-        }];
-        [self.bodyLabel autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:kLabelHorizontalInsets];
-        [self.bodyLabel autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:kLabelHorizontalInsets];
-        [self.bodyLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets];
+//        [UIView autoSetPriority:UILayoutPriorityRequired forConstraints:^{
+//            [self.titleLabel autoSetContentCompressionResistancePriorityForAxis:ALAxisVertical];
+//        }];
+//        [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:kLabelVerticalInsets];
+//        [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:kLabelHorizontalInsets];
+//        [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:kLabelHorizontalInsets];
+//        
+//        // This is the constraint that connects the title and body labels. It is a "greater than or equal" inequality so that if the row height is
+//        // slightly larger than what is actually required to fit the cell's subviews, the extra space will go here. (This is the case on iOS 7
+//        // where the cell separator is only 0.5 points tall, but in the tableView:heightForRowAtIndexPath: method of the view controller, we add
+//        // a full 1.0 point in extra height to account for it, which results in 0.5 points extra space in the cell.)
+//        // See https://github.com/smileyborg/TableViewCellWithAutoLayout/issues/3 for more info.
+//        [self.bodyLabel autoPinEdge:ALEdgeTop toEdge:ALEdgeBottom ofView:self.titleLabel withOffset:kLabelVerticalInsets relation:NSLayoutRelationGreaterThanOrEqual];
+//        
+//        [UIView autoSetPriority:UILayoutPriorityRequired forConstraints:^{
+//            [self.bodyLabel autoSetContentCompressionResistancePriorityForAxis:ALAxisVertical];
+//        }];
+//        [self.bodyLabel autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:kLabelHorizontalInsets];
+//        [self.bodyLabel autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:kLabelHorizontalInsets];
+//        [self.bodyLabel autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:kLabelVerticalInsets];
         
         self.didSetupConstraints = YES;
     }
@@ -110,9 +122,9 @@
     [self.contentView setNeedsLayout];
     [self.contentView layoutIfNeeded];
     
-    // Set the preferredMaxLayoutWidth of the mutli-line bodyLabel based on the evaluated width of the label's frame,
-    // as this will allow the text to wrap correctly, and as a result allow the label to take on the correct height.
-    self.bodyLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.bodyLabel.frame);
+//    // Set the preferredMaxLayoutWidth of the mutli-line bodyLabel based on the evaluated width of the label's frame,
+//    // as this will allow the text to wrap correctly, and as a result allow the label to take on the correct height.
+//    self.bodyLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.bodyLabel.frame);
 }
 
 - (void)updateFonts

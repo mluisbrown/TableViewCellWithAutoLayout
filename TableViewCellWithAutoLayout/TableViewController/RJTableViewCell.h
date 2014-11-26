@@ -31,6 +31,9 @@
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *bodyLabel;
 
+// image view to demonstrate the problem
+@property (strong, nonatomic) IBOutlet UIImageView *mainImage;
+
 - (void)updateFonts;
 
 @end
