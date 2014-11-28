@@ -1,3 +1,8 @@
+Note
+====
+
+This repository was forked from the original merely to demonstrate an issue. The original README contents follow.
+
 TableViewCellWithAutoLayout
 ===========================
 
