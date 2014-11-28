@@ -82,7 +82,13 @@
         // the image view is pinned to the edges of the content view with a 15px inset
         // this should be enough to force the height of the content view
         [self.mainImage autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(15, 15, 15, 15)];
-        // make the height of the image view equal to 0.5 the width of the contentView
+
+        // if you set a fixed height constraint, there is no problem, the cell's
+        // contentView height is pushed out to fit this constraint
+//        [self.mainImage autoSetDimension:ALDimensionHeight toSize:100];
+        
+        // make the height of the image view equal to 0.5 the width of the contentView. This
+        // doesn't result in 'forcing' the cell's contentView height
         [self.mainImage autoMatchDimension:ALDimensionHeight toDimension:ALDimensionWidth ofView:self.contentView withMultiplier:0.5 relation:NSLayoutRelationGreaterThanOrEqual];
         
         
